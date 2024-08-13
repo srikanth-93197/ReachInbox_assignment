@@ -5,7 +5,8 @@ import Footer from "../components/Footer";
 
 function Login() {
     const Navigate = useNavigate()
-    const token = localStorage.getItem('token')
+    // const token = localStorage.getItem('token')
+    const token = 1;
     if(token){
         Navigate('/')
     }
@@ -14,7 +15,7 @@ function Login() {
   }
   const handleGoogleLogin = () => {
     // Redirect to Google login URL
-    window.location.href = "https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=https://reachinbox-assignment.vercel.app/";
+    window.location.href = "https://hiring.reachinbox.xyz/api/v1/auth/google-login?redirect_to=http://localhost:5173/";
   };
 
   return (

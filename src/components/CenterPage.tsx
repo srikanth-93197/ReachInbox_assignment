@@ -6,6 +6,7 @@ import { FaReply } from "react-icons/fa";
 import { SlArrowDown } from "react-icons/sl";
 import { GoDotFill } from "react-icons/go";
 import DeletePopUp from "./DeletePopUp";
+import 'boxicons'
 
 interface MailData {
   id: number;
@@ -27,14 +28,21 @@ const CenterPage: React.FC<Props> = ({ selectedThread }) => {
   const [showDelete, setShowDelete] = useState(false);
 
   const [selectedMail, setSelectedMail] = useState<MailData[]>([]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
 
   const togglePopUp = () => {
     setShowPopUp(!showPopUp);
   };
 
+  
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token");
+      console.log("thread id:", selectedThread)
       await axios.delete(
         `https://hiring.reachinbox.xyz/api/v1/onebox/messages/${selectedThread}`,
         {
@@ -119,12 +127,58 @@ const CenterPage: React.FC<Props> = ({ selectedThread }) => {
             <GoDotFill className="text-yellow-500 text-xl" /> Meeting Completed{" "}
             <SlArrowDown className=" ml-2" />
           </div>
-          <div className="dark:bg-[#1F1F1F] flex items-center text-black dark:text-white border bg-white dark:border-[#343A40] rounded-md py-2 px-3 text-sm">
-            Move <SlArrowDown className=" ml-2" />
+
+          <div>
+      <button
+        type="button"
+        className="inline-flex w-full justify-center gap-x-1.5 bg-white dark:bg-[#1F1F1F] ring-[#dfdfdf] dark:ring-[#313131] rounded-md px-3 py-2 text-sm font-semibold text-black dark:text-white shadow-sm ring-1 ring-inset"
+        id="menu-button"
+        aria-expanded={isOpen}
+        aria-haspopup="true"
+        onClick={toggleDropdown}
+      >
+        Menu
+        <svg
+          className={`-mr-1 h-5 w-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            fillRule="evenodd"
+            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <div className="absolute z-10 mt-2 w-56 origin-top-right text-black dark:text-white divide-y dark:bg-[#23272C] bg-[#ECEFF3] divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ">
+          <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+            <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-300 dark:md:hover:bg-[#343a40]" role="menuitem">
+            <i className='bx-fw bx bxl-facebook-square'></i>Mark as unread
+            </a>
+            <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-300 dark:md:hover:bg-[#343a40]" role="menuitem">Edit lead</a>
+            <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-300 dark:md:hover:bg-[#343a40]" role="menuitem">Remove lead</a>
+            <a href="#" className="block px-4 py-2 text-sm hover:bg-gray-300 dark:md:hover:bg-[#343a40]" role="menuitem">Set Remainder</a>
+            <a
+  href="#"
+  className="block px-4 py-2 text-sm hover:bg-gray-300 dark:md:hover:bg-[#343a40]"
+  role="menuitem"
+  onClick={() => setShowDelete(true)}
+>
+<i className='bx bxs-user'></i>
+{/* <box-icon name='trash'></box-icon> */}
+{/* <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAAAAXNSR0IArs4c6QAAARdJREFUOE/t1b0uBVEUBeDvJqJTaURPRaWhclUKUUkUGt5Ar0GlUniKG4lKPIBEofEAotIp6FD6OVtmkpm5Y2YQ3d3JJJPstdf+OWuf0/MP1mvhnMBCDeYVN/ioi28iXccZxr9JfJv8c3ir+ptIT7GJY7xUAvtYxgouf0J6gTVM46ESeJBa30d0E7iSFSudxVbBG/8zLZUOUsxdFvOcYRVJI+v5H8QQ3URXJdJJzGMH29jDdUuSIyxiIxvRF77uoBrnVUlSO/cupNFW6DFay0d0mMgj+Yh0WMujmQ7Ju6rTpQwRws4X5D4tSXy/llTTUnUmjZWLe7SrPWIK73lA3enHpbyb9n4VYy3MTzjBVRHX9px0rbaE+wRYS2gWjTXWYAAAAABJRU5ErkJggg=="/> */}
+  Delete Mail
+</a>
+
           </div>
-          <div className="dark:bg-[#1F1F1F] border bg-white text-black dark:text-white  dark:border-[#343A40] rounded-md py-2 px-3 text-sm">
-            ...
+        </div>
+      )}
+    
           </div>
+          
         </div>
       </div>
 
